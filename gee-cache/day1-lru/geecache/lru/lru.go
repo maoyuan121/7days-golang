@@ -64,7 +64,7 @@ func (c *Cache) Get(key string) (value Value, ok bool) {
 	return
 }
 
-// 移除最老的  cache
+// 移除最老的  cache, 所谓最老的元素指的就是链表中的最后一个元素
 // 重新计算缓存总字节数
 // 如果定义了 OnEvicted，那么触发它
 func (c *Cache) RemoveOldest() {
