@@ -4,10 +4,10 @@ import "container/list"
 
 // LRU = Least Recently Used 最近最少使用。 It is not safe for concurrent access.
 type Cache struct {
-	maxBytes int64 // 允许缓存的最大字节数
-	nbytes   int64 // 所有缓存数据的字节数
-	ll       *list.List
-	cache    map[string]*list.Element
+	maxBytes int64                    // 允许缓存的最大字节数
+	nbytes   int64                    // 所有缓存数据的字节数
+	ll       *list.List               // 链表
+	cache    map[string]*list.Element // 充当字典， key 为缓存的 key，值是链表元素
 
 	// 可选的，在条目被清除时执行。
 	OnEvicted func(key string, value Value)
@@ -18,7 +18,6 @@ type entry struct {
 	value Value
 }
 
-// Value use Len to count how many bytes it takes
 // Value 定义了 Len() 函数，其用于计算他占用了多少个字节
 type Value interface {
 	Len() int
