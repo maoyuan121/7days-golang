@@ -6,8 +6,8 @@ import (
 )
 
 type router struct {
-	roots    map[string]*node
-	handlers map[string]HandlerFunc
+	roots    map[string]*node       // 路由树， 根节点（key）为 http 请求方法
+	handlers map[string]HandlerFunc // 处理节点，key 为路由方法 + 请求路径
 }
 
 func newRouter() *router {
@@ -17,7 +17,7 @@ func newRouter() *router {
 	}
 }
 
-// Only one * is allowed
+// 只能有 一个 *
 func parsePattern(pattern string) []string {
 	vs := strings.Split(pattern, "/")
 
@@ -25,7 +25,7 @@ func parsePattern(pattern string) []string {
 	for _, item := range vs {
 		if item != "" {
 			parts = append(parts, item)
-			if item[0] == '*' {
+			if item[0] == '*' { // 只能有 一个 *
 				break
 			}
 		}

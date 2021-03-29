@@ -8,15 +8,15 @@ import (
 // HandlerFunc defines the request handler used by gee
 type HandlerFunc func(*Context)
 
-// Engine implement the interface of ServeHTTP
 type (
 	RouterGroup struct {
-		prefix      string
-		middlewares []HandlerFunc // support middleware
-		parent      *RouterGroup  // support nesting
-		engine      *Engine       // all groups share a Engine instance
+		prefix      string        // 前缀
+		middlewares []HandlerFunc // 这个分组支持的中间件集合
+		parent      *RouterGroup  // 父分组
+		engine      *Engine       // 所有的分组共享一个 Engine 实例
 	}
 
+	// Engine implement the interface of ServeHTTP
 	Engine struct {
 		*RouterGroup
 		router *router
@@ -32,8 +32,8 @@ func New() *Engine {
 	return engine
 }
 
-// Group is defined to create a new RouterGroup
-// remember all groups share the same Engine instance
+// Group 用来重建一个新的 RouterGroup
+// 所有的 Group 共享通一个 Engine 实例
 func (group *RouterGroup) Group(prefix string) *RouterGroup {
 	engine := group.engine
 	newGroup := &RouterGroup{

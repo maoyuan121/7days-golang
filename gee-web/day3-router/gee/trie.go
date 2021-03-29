@@ -5,17 +5,22 @@ import (
 	"strings"
 )
 
+// 节点
+// 根节点为  get, post, delete, put 等 http method
 type node struct {
-	pattern  string
-	part     string
-	children []*node
-	isWild   bool
+	pattern  string  // 待匹配路由
+	part     string  // 路由的一部分
+	children []*node // 子节点集合
+	isWild   bool    // 是否有通配符（: *）
 }
 
 func (n *node) String() string {
 	return fmt.Sprintf("node{pattern=%s, part=%s, isWild=%t}", n.pattern, n.part, n.isWild)
 }
 
+// @param pattern: 完成路径
+// @param parts: 根据路径用 '/' split 出来的数组
+// @param height: 深度
 func (n *node) insert(pattern string, parts []string, height int) {
 	if len(parts) == height {
 		n.pattern = pattern
