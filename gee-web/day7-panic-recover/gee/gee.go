@@ -29,7 +29,7 @@ type (
 	}
 )
 
-// New is the constructor of gee.Engine
+// Engine 的构造函数
 func New() *Engine {
 	engine := &Engine{router: newRouter()}
 	engine.RouterGroup = &RouterGroup{engine: engine}
@@ -37,7 +37,8 @@ func New() *Engine {
 	return engine
 }
 
-// Default use Logger() & Recovery middlewares
+// 也是 Engine 的构造函数
+// Default 使用了 Logger & Recovery 中间件
 func Default() *Engine {
 	engine := New()
 	engine.Use(Logger(), Recovery())
