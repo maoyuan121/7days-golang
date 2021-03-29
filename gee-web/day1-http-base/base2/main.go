@@ -1,18 +1,13 @@
 package main
 
-// $ curl http://localhost:9999/
-// URL.Path = "/"
-// $ curl http://localhost:9999/hello
-// Header["Accept"] = ["*/*"]
-// Header["User-Agent"] = ["curl/7.54.0"]
-// curl http://localhost:9999/world
-// 404 NOT FOUND: /world
-
 import (
 	"fmt"
 	"log"
 	"net/http"
 )
+
+// base 1 是定义 HandlerFunc 来根据路由处理请求
+// 这一节是定义一个 Handler 来处理, 所有的处理都写在了 Handler 的 ServeHTTP 方法，不太好
 
 // Engine is the uni handler for all requests
 type Engine struct{}
