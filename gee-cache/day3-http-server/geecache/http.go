@@ -30,6 +30,7 @@ func (p *HTTPPool) Log(format string, v ...interface{}) {
 }
 
 // ServeHTTP handle all http requests
+// 实现 http.Handler 接口
 func (p *HTTPPool) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if !strings.HasPrefix(r.URL.Path, p.basePath) {
 		panic("HTTPPool serving unexpected path: " + r.URL.Path)
