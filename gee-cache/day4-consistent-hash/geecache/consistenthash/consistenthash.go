@@ -6,18 +6,20 @@ import (
 	"strconv"
 )
 
-// Hash maps bytes to uint32
+// Hash 将 bytes 转换为 uint32
 type Hash func(data []byte) uint32
 
-// Map constains all hashed keys
+// Map 包含了所有 hash  过的 key
 type Map struct {
-	hash     Hash
-	replicas int
-	keys     []int // Sorted
-	hashMap  map[int]string
+	hash     Hash           // 函数函数
+	replicas int            // 虚拟节点数
+	keys     []int          // 哈希环 Sorted, 虚拟节点的哈希值集合
+	hashMap  map[int]string // 虚拟节点与真实节点的映射表。 键是虚拟节点的哈希值，值是真实节点的名称
 }
 
-// New creates a Map instance
+// Map 的构造函数
+// @param replicas：虚拟节点倍数
+// @param fn：hash 函数
 func New(replicas int, fn Hash) *Map {
 	m := &Map{
 		replicas: replicas,
@@ -30,7 +32,7 @@ func New(replicas int, fn Hash) *Map {
 	return m
 }
 
-// Add adds some keys to the hash.
+// 将 key 添加到 hash
 func (m *Map) Add(keys ...string) {
 	for _, key := range keys {
 		for i := 0; i < m.replicas; i++ {
@@ -39,6 +41,7 @@ func (m *Map) Add(keys ...string) {
 			m.hashMap[hash] = key
 		}
 	}
+
 	sort.Ints(m.keys)
 }
 
