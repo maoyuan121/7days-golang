@@ -1,6 +1,6 @@
 package geecache
 
-// A ByteView holds an immutable view of bytes.
+// ByteView 作为一个不可变的 bytes
 type ByteView struct {
 	b []byte
 }

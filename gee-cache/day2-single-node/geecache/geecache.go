@@ -6,22 +6,22 @@ import (
 	"sync"
 )
 
-// A Group is a cache namespace and associated data loaded spread over
+// Group 是一个缓存名称空间，以及加载的相关数据
 type Group struct {
 	name      string
 	getter    Getter
 	mainCache cache
 }
 
-// A Getter loads data for a key.
+// Getter 根据 key 加载数据
 type Getter interface {
 	Get(key string) ([]byte, error)
 }
 
-// A GetterFunc implements Getter with a function.
+// GetterFunc 使用一个 func 实现了 Getter
 type GetterFunc func(key string) ([]byte, error)
 
-// Get implements Getter interface function
+// 实现 Getter 接口的方法
 func (f GetterFunc) Get(key string) ([]byte, error) {
 	return f(key)
 }
@@ -31,7 +31,7 @@ var (
 	groups = make(map[string]*Group)
 )
 
-// NewGroup create a new instance of Group
+// NewGroup 是 Group 的构造函数
 func NewGroup(name string, cacheBytes int64, getter Getter) *Group {
 	if getter == nil {
 		panic("nil Getter")
@@ -47,8 +47,7 @@ func NewGroup(name string, cacheBytes int64, getter Getter) *Group {
 	return g
 }
 
-// GetGroup returns the named group previously created with NewGroup, or
-// nil if there's no such group.
+// GetGroup 返回之前用 NewGroup 创建的命名 group，如果没有返回 nil
 func GetGroup(name string) *Group {
 	mu.RLock()
 	g := groups[name]
@@ -56,7 +55,7 @@ func GetGroup(name string) *Group {
 	return g
 }
 
-// Get value for a key from cache
+// 从 cache 中根据指定的 key 返回值
 func (g *Group) Get(key string) (ByteView, error) {
 	if key == "" {
 		return ByteView{}, fmt.Errorf("key is required")

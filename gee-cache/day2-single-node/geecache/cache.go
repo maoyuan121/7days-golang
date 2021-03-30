@@ -5,6 +5,8 @@ import (
 	"sync"
 )
 
+// 缓存
+// 包装 lru.Cache，添加并发特性
 type cache struct {
 	mu         sync.Mutex
 	lru        *lru.Cache
