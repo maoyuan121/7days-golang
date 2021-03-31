@@ -6,23 +6,23 @@ import (
 	"reflect"
 )
 
-// Field represents a column of database
+// 代表数据库表中的一个列
 type Field struct {
-	Name string
-	Type string
-	Tag  string
+	Name string // 列名
+	Type string // 数据类型
+	Tag  string // 对应的  tag
 }
 
-// Schema represents a table of database
+// 代表数据库中的一个表
 type Schema struct {
-	Model      interface{}
-	Name       string
-	Fields     []*Field
-	FieldNames []string
-	fieldMap   map[string]*Field
+	Model      interface{}       // 对应的 Model struct
+	Name       string            // 表名
+	Fields     []*Field          // 列集合
+	FieldNames []string          // 列名集合
+	fieldMap   map[string]*Field // 列名和列的映射
 }
 
-// GetField returns field by name
+// 根据列名返回列
 func (schema *Schema) GetField(name string) *Field {
 	return schema.fieldMap[name]
 }
@@ -44,6 +44,8 @@ type ITableName interface {
 // Parse a struct to a Schema instance
 func Parse(dest interface{}, d dialect.Dialect) *Schema {
 	modelType := reflect.Indirect(reflect.ValueOf(dest)).Type()
+
+	// 如果 dest 实现了 ITableName 那么表名是其 TableName() 函数的返回值，否在就是其 struct name
 	var tableName string
 	t, ok := dest.(ITableName)
 	if !ok {
@@ -51,6 +53,7 @@ func Parse(dest interface{}, d dialect.Dialect) *Schema {
 	} else {
 		tableName = t.TableName()
 	}
+
 	schema := &Schema{
 		Model:    dest,
 		Name:     tableName,
@@ -59,6 +62,8 @@ func Parse(dest interface{}, d dialect.Dialect) *Schema {
 
 	for i := 0; i < modelType.NumField(); i++ {
 		p := modelType.Field(i)
+
+		// 如果字段不是匿名的且是导出（public，大写开头）的
 		if !p.Anonymous && ast.IsExported(p.Name) {
 			field := &Field{
 				Name: p.Name,

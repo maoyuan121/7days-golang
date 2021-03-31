@@ -31,6 +31,7 @@ func New(replicas int, fn Hash) *Map {
 }
 
 // Add adds some keys to the hash.
+// keys 是真实节点的集合
 func (m *Map) Add(keys ...string) {
 	for _, key := range keys {
 		for i := 0; i < m.replicas; i++ {
@@ -39,10 +40,11 @@ func (m *Map) Add(keys ...string) {
 			m.hashMap[hash] = key
 		}
 	}
-	sort.Ints(m.keys)
+	sort.Ints(m.keys) // 排序： 1,2,3,4,5
 }
 
 // Get gets the closest item in the hash to the provided key.
+// 根据提供的 key（真实节点）返回 hashmap 里面最近的 item
 func (m *Map) Get(key string) string {
 	if len(m.keys) == 0 {
 		return ""
@@ -50,6 +52,12 @@ func (m *Map) Get(key string) string {
 
 	hash := int(m.hash([]byte(key)))
 	// Binary search for appropriate replica.
+
+	// Searching data sorted in descending order would use the <=
+	// operator instead of the >= operator.
+
+	// 二分位为 true  向前找
+	// 二分位为 false 向后找
 	idx := sort.Search(len(m.keys), func(i int) bool {
 		return m.keys[i] >= hash
 	})
