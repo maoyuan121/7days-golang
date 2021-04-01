@@ -9,16 +9,16 @@ import (
 	"geeorm/schema"
 )
 
-// Model assigns refTable
+// 分配关联表
 func (s *Session) Model(value interface{}) *Session {
-	// nil or different model, update refTable
+	// 如果没有已关联的表，或者已关联的表不是当前指定要关联的，那么关联
 	if s.refTable == nil || reflect.TypeOf(value) != reflect.TypeOf(s.refTable.Model) {
 		s.refTable = schema.Parse(value, s.dialect)
 	}
 	return s
 }
 
-// RefTable returns a Schema instance that contains all parsed fields
+// 返回关联的表 schema
 func (s *Session) RefTable() *schema.Schema {
 	if s.refTable == nil {
 		log.Error("Model is not set")
@@ -26,7 +26,7 @@ func (s *Session) RefTable() *schema.Schema {
 	return s.refTable
 }
 
-// CreateTable create a table in database with a model
+// 根据已关联表的 schema 在数据库中创建表
 func (s *Session) CreateTable() error {
 	table := s.RefTable()
 	var columns []string
@@ -38,13 +38,13 @@ func (s *Session) CreateTable() error {
 	return err
 }
 
-// DropTable drops a table with the name of model
+// 根据已关联表的 schema 在数据库中删除表
 func (s *Session) DropTable() error {
 	_, err := s.Raw(fmt.Sprintf("DROP TABLE IF EXISTS %s", s.RefTable().Name)).Exec()
 	return err
 }
 
-// HasTable returns true of the table exists
+// 判断数据库中是否存在关联的表
 func (s *Session) HasTable() bool {
 	sql, values := s.dialect.TableExistSQL(s.RefTable().Name)
 	row := s.Raw(sql, values...).QueryRow()

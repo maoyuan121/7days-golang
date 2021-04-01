@@ -5,7 +5,7 @@ import (
 	"reflect"
 )
 
-// Insert one or more records in database
+// 往数据库插入 1 条或者多条数据
 func (s *Session) Insert(values ...interface{}) (int64, error) {
 	recordValues := make([]interface{}, 0)
 	for _, value := range values {
@@ -24,7 +24,7 @@ func (s *Session) Insert(values ...interface{}) (int64, error) {
 	return result.RowsAffected()
 }
 
-// Find gets all eligible records
+// 查找所有的记录
 func (s *Session) Find(values interface{}) error {
 	destSlice := reflect.Indirect(reflect.ValueOf(values))
 	destType := destSlice.Type().Elem()

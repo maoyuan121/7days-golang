@@ -6,14 +6,14 @@ import (
 	"reflect"
 )
 
-// Field represents a column of database
+// 代表数据库表中的一个列
 type Field struct {
 	Name string
 	Type string
 	Tag  string
 }
 
-// Schema represents a table of database
+// 代表数据库中的一个表
 type Schema struct {
 	Model      interface{}
 	Name       string
@@ -22,12 +22,12 @@ type Schema struct {
 	fieldMap   map[string]*Field
 }
 
-// GetField returns field by name
+// 根据列名返回列
 func (schema *Schema) GetField(name string) *Field {
 	return schema.fieldMap[name]
 }
 
-// 返回 dest 这个 Struct 实例的成员值
+// 返回 dest 的成员变量的值
 func (schema *Schema) RecordValues(dest interface{}) []interface{} {
 	destValue := reflect.Indirect(reflect.ValueOf(dest))
 	var fieldValues []interface{}
@@ -41,7 +41,7 @@ type ITableName interface {
 	TableName() string
 }
 
-// 将 struct 解析为 Schema
+// 将一个 struct 解析到对应的 dialect 的 schema
 func Parse(dest interface{}, d dialect.Dialect) *Schema {
 	modelType := reflect.Indirect(reflect.ValueOf(dest)).Type()
 	var tableName string

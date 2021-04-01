@@ -7,14 +7,14 @@ import (
 	"geeorm/session"
 )
 
-// Engine is the main struct of geeorm, manages all db sessions and transactions.
+// Engine 是 geeorm 的主 strcut，管理所有的 db session 和事务
 type Engine struct {
 	db      *sql.DB
 	dialect dialect.Dialect
 }
 
-// NewEngine create a instance of Engine
-// connect database and ping it to test whether it's alive
+// Engine 的构造函数
+// 链接数据库并 ping 下看是否是通的
 func NewEngine(driver, source string) (e *Engine, err error) {
 	db, err := sql.Open(driver, source)
 	if err != nil {
@@ -37,7 +37,7 @@ func NewEngine(driver, source string) (e *Engine, err error) {
 	return
 }
 
-// Close database connection
+// 关闭数据库连接
 func (engine *Engine) Close() {
 	if err := engine.db.Close(); err != nil {
 		log.Error("Failed to close database")
@@ -45,7 +45,7 @@ func (engine *Engine) Close() {
 	log.Info("Close database success")
 }
 
-// NewSession creates a new session for next operations
+// 为下一个操作创建一个 session
 func (engine *Engine) NewSession() *session.Session {
 	return session.New(engine.db, engine.dialect)
 }

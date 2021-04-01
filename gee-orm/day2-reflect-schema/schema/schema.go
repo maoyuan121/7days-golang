@@ -27,7 +27,7 @@ func (schema *Schema) GetField(name string) *Field {
 	return schema.fieldMap[name]
 }
 
-// Values return the values of dest's member variables
+// 返回 dest 的成员变量的值
 func (schema *Schema) RecordValues(dest interface{}) []interface{} {
 	destValue := reflect.Indirect(reflect.ValueOf(dest))
 	var fieldValues []interface{}
@@ -41,7 +41,7 @@ type ITableName interface {
 	TableName() string
 }
 
-// Parse a struct to a Schema instance
+// 将一个 struct 解析到对应的 dialect 的 schema
 func Parse(dest interface{}, d dialect.Dialect) *Schema {
 	modelType := reflect.Indirect(reflect.ValueOf(dest)).Type()
 
