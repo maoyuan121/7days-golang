@@ -4,16 +4,16 @@ import (
 	"strings"
 )
 
-// Clause contains SQL conditions
+// SQL 子句
 type Clause struct {
 	sql     map[Type]string
 	sqlVars map[Type][]interface{}
 }
 
-// Type is the type of Clause
+// 子句类型
 type Type int
 
-// Support types for Clause
+// 支持的子句类型
 const (
 	INSERT Type = iota
 	VALUES
@@ -26,7 +26,7 @@ const (
 	COUNT
 )
 
-// Set adds a sub clause of specific type
+// 添加一个特殊类型的子句
 func (c *Clause) Set(name Type, vars ...interface{}) {
 	if c.sql == nil {
 		c.sql = make(map[Type]string)
@@ -37,7 +37,7 @@ func (c *Clause) Set(name Type, vars ...interface{}) {
 	c.sqlVars[name] = vars
 }
 
-// Build generate the final SQL and SQLVars
+// 生成最终的 SQL 和 SQL 参数
 func (c *Clause) Build(orders ...Type) (string, []interface{}) {
 	var sqls []string
 	var vars []interface{}

@@ -27,19 +27,19 @@ var DefaultOption = &Option{
 	CodecType:   codec.GobType,
 }
 
-// Server represents an RPC Server.
+// RPC Server.
 type Server struct{}
 
-// NewServer returns a new Server.
+// RPC Server  的构造函数
 func NewServer() *Server {
 	return &Server{}
 }
 
-// DefaultServer is the default instance of *Server.
+// DefaultServer 是 *Server 的默认实例
 var DefaultServer = NewServer()
 
-// ServeConn runs the server on a single connection.
-// ServeConn blocks, serving the connection until the client hangs up.
+// 在一个连接上运行 server
+// ServerConn 将一直阻塞，为 connection 提供服务，直到客户端挂断
 func (server *Server) ServeConn(conn io.ReadWriteCloser) {
 	defer func() { _ = conn.Close() }()
 	var opt Option
@@ -82,10 +82,10 @@ func (server *Server) serveCodec(cc codec.Codec) {
 	_ = cc.Close()
 }
 
-// request stores all information of a call
+// 存储所有调用请求的信息
 type request struct {
-	h            *codec.Header // header of request
-	argv, replyv reflect.Value // argv and replyv of request
+	h            *codec.Header // 请求头
+	argv, replyv reflect.Value // 请求的 argv and replyv
 }
 
 func (server *Server) readRequestHeader(cc codec.Codec) (*codec.Header, error) {

@@ -7,6 +7,7 @@ import (
 	"log"
 )
 
+// Glob 解码编码器
 type GobCodec struct {
 	conn io.ReadWriteCloser
 	buf  *bufio.Writer
@@ -16,6 +17,7 @@ type GobCodec struct {
 
 var _ Codec = (*GobCodec)(nil)
 
+// Glob 解码编码器构造函数
 func NewGobCodec(conn io.ReadWriteCloser) Codec {
 	buf := bufio.NewWriter(conn)
 	return &GobCodec{

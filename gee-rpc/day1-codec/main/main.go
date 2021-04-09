@@ -12,7 +12,7 @@ import (
 
 func startServer(addr chan string) {
 	// pick a free port
-	l, err := net.Listen("tcp", ":0")
+	l, err := net.Listen("tcp", ":6789")
 	if err != nil {
 		log.Fatal("network error:", err)
 	}

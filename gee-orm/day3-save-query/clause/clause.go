@@ -4,7 +4,6 @@ import (
 	"strings"
 )
 
-// Clause contains SQL conditions
 // SQL 子句
 type Clause struct {
 	sql     map[Type]string

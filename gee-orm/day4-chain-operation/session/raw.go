@@ -9,8 +9,7 @@ import (
 	"strings"
 )
 
-// Session keep a pointer to sql.DB and provides all execution of all
-// kind of database operations.
+// Session 保持一个到 sql.DB 的指针，提供所有的数据库操作
 type Session struct {
 	db       *sql.DB
 	dialect  dialect.Dialect
